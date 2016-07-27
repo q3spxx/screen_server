@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>admin</title>
+	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+	<div id="data">
+		<div id="buttons">
+			<input type="button" value="Новый фильм" onclick="Render.showCreate()">
+			<a href="/">Назад к выбору экранов</a>
+			<button onclick="Sys.clear_token_notes()">Очистить список токенов</button>
+			<button onclick="Sys.force_update()">Обновить экраны</button>
+		</div>
+		<div id="main">
+			<div>
+				<div id="table_title"><h2>Расписание на экранах</h2></div>
+				<input id="btnCurrent" type="button" value="Текущее" disabled onclick="Render.onChange(0)">
+				<input id="btnFuture" type="button" value="Шаблон" onclick="Render.onChange(1)">
+				<input id="cur_in_fut" class="opts" type="button" value="Текущее в шаблон" onclick="Win.open_alarm('Скопировать текущее расписание в шаблон?', DB.copyCF)">
+				<input id="fut_in_cur" class="opts" type="button" value="Шаблон в текущее" onclick="Win.open_alarm('Скопировать шаблон в текущее расписание?', DB.copyFC)">
+			</div>
+			<div id="current"></div>
+			<div id="future" hidden></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>

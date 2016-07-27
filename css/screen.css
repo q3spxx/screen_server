@@ -1,0 +1,149 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+	position: absolute;
+	background-size: cover;
+	background-image: url(images/ciri.jpg);
+	cursor: none;
+}
+#container {
+	margin-top: 200px;
+	border-top: 1px solid #444;
+	width: 100%;
+	box-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+.row {
+	width: 100%;
+	height: 70px;
+	border-bottom: 1px solid #444;
+	box-sizing: border-box;
+}
+.name {
+	position: relative;
+	padding-left: 5px;
+	margin-top: 22px;
+	color: white;
+	float: left;
+	font: bold 22px sans-serif;
+	text-align: left;
+	text-shadow: 0 0 5px black;
+}
+.nameWrap {
+	overflow: hidden;
+	width: 37%;
+	height: 100%;
+	float: left;
+}
+.hour {
+	padding-top: 26px;
+	width: 7%;
+	height: 100%;
+	float: left;
+	font: bold 24px sans-serif;
+	text-align: center;
+	border-left: 1px solid #001A66;
+	box-sizing: border-box;
+	text-shadow: 0 0 5px black;
+}
+.w {
+	color: white;
+	opacity: 1;
+}
+.g {
+	color: white;
+	opacity: 0.3;
+}
+.title {
+	width: 100%;
+	position: relative;
+	margin-top: 22px;
+	color: white;
+	float: left;
+	font: bold 24px sans-serif;
+	text-align: center;
+	text-shadow: 0 0 5px black;
+}
+.sessions {
+	width: 63%;
+	height: 100%;
+	float: left;
+	text-align: center;
+	font: bold 24px sans-serif;
+	color: #fff;
+	position: relative;
+	padding-top: 22px;
+	border-left: 1px solid #001A66;
+	box-sizing: border-box;
+	text-shadow: 0 0 5px black;
+}
+#serverTime {
+	position: absolute;
+	left: 100%;
+	margin-top: 30px;
+	margin-left: -350px;
+	color: rgba(255,255,255,1);
+	font: bold 120px sans-serif;
+	text-shadow: black 5px 5px 0;
+}
+#next_movie {
+	position: absolute;
+	overflow: hidden;
+	border-radius: 10px;
+	margin-top: 20px;
+	left: 50%;
+	width: 700px;
+	height: 160px;
+	margin-left: -400px;
+	color: #fff;
+	font: bold 20px sans-serif;
+	text-shadow: #000 1px 1px 2px;
+	background-color: #002DB2;
+	box-shadow: 0 0 5px #000;
+}
+#next_movie_title {
+	width: 700px;
+	height: 40px;
+	float: left;
+	text-align: center;
+	background-color: #002DB2;
+}
+#next_movie_title_0 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 600px;
+	height: 60px;
+	float: left;
+	font-size: 25px;
+	background-color: #88f;
+}
+#next_movie_title_1 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 600px;
+	height: 60px;
+	float: left;
+	background-color: #002DB2;
+
+}
+#next_movie_time_0 {
+	width: 100px;
+	height: 60px;
+	float: left;
+	font-size: 25px;
+	text-align: center;
+	background-color: #77f;
+	
+}
+#next_movie_time_1 {
+	top: 100px;
+	width: 100px;
+	height: 60px;
+	float: left;
+	text-align: center;
+	background-color: #103DB2;
+}
