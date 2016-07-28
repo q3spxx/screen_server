@@ -5,7 +5,8 @@ var Table = {
 	f_origin: null,
 	type: "current",
 	draggable_id: null,
-	save: true
+	save: true,
+	screen_select: 0
 };
 
 var Ajax = {
@@ -379,6 +380,14 @@ function Movie () {
 };
 
 var Render = {
+	select_change: function () {
+		Table.screen_select = Number(this.value);
+		if (Table.type == "current") {
+			Render.showMovies(Table.data);
+		} else {
+			Render.showFuture(Table.f_data);
+		};
+	},
 	//Переключение между таблицами
 	onChange: function (id) {
 		if (id == 0) {
@@ -431,6 +440,29 @@ var Render = {
 	},
 	//Создание html таблицы
 	composeTable: function (movies, tTable) {
+		if (Table.screen_select == 1) {
+			var sw = true;
+			movies = movies.filter(function (movie, i) {
+				if (sw) {
+					sw = false;
+					return true;
+				} else {
+					sw = true;
+					return false;
+				};
+			});
+		} else if (Table.screen_select == 2) {
+			var sw = false;
+			movies = movies.filter(function (movie, i) {
+				if (sw) {
+					sw = false;
+					return true;
+				} else {
+					sw = true;
+					return false;
+				};
+			});
+		};
 		var table = Sys.ce("div");
 		var bg = true;
 		//Создание строк
@@ -449,12 +481,18 @@ var Render = {
 			row.dataset.id = movie.id;
 			row.dataset.tTable = tTable;
 			//Определение цвета
-			if (bg) {
+			if (Table.screen_select == 0) {
+				if (bg) {
+					row.style.backgroundColor = "#aaa";
+					bg = false;
+				} else {
+					row.style.backgroundColor = "#ddd";
+					bg = true;
+				};
+			} else if (Table.screen_select == 1) {
 				row.style.backgroundColor = "#aaa";
-				bg = false;
-			} else {
+			} else if (Table.screen_select == 2) {
 				row.style.backgroundColor = "#ddd";
-				bg = true;
 			};
 			//Создание контейнера name
 			var name = Sys.ce("div");
