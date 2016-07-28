@@ -27,6 +27,8 @@ var Ajax = {
 			callback = Ajax.clearToken;
 		} else if (type == "force_update") {
 			callback = Ajax.force_update;
+		} else if (type == "save") {
+			callback = Ajax.save;
 		};
 		//Отправка запроса
 		$.ajax({
@@ -100,16 +102,23 @@ var Ajax = {
 		console.log("Отправлен запрос на обновление");
 	},
 	save: function (data) {
+		console.log('save')
 		Table.save = false;
 	}
 };
 var DB = {
 	copy: null,
 	save: function () {
+		var base;
+		if (Table.type == "current") {
+			base = Table.data;
+		} else {
+			base = Table.f_data;
+		};
 		var body = JSON.stringify({
 			tTable: Table.type,
 			action: "save",
-			data: Table.data
+			data: base
 		});
 		Ajax.send(body, "save");
 	},
