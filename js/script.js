@@ -110,6 +110,7 @@ var Ajax = {
 var DB = {
 	copy: null,
 	save: function () {
+		Render.change_button_save(true);
 		var base;
 		if (Table.type == "current") {
 			base = Table.data;
@@ -380,6 +381,19 @@ function Movie () {
 };
 
 var Render = {
+	change_button_save: function (state) {
+		if (state) {
+			Render.change_buttons_copy(false);
+		} else {
+			Render.change_buttons_copy(true);
+		};
+		Table.save = state;
+		document.getElementById('save').disabled = state;
+	},
+	change_buttons_copy: function (state) {
+		document.getElementById('cur_in_fut').disabled = state;
+		document.getElementById('fut_in_cur').disabled = state;
+	},
 	select_change: function () {
 		Table.screen_select = Number(this.value);
 		if (Table.type == "current") {
@@ -654,7 +668,7 @@ function move_row (drag_id, enter_id, type) {
 	};
 	t.splice(drag_index, 1);
 	t.splice(enter_index, 0, row);
-
+	Render.change_button_save(false);
 };
 
 function find_index (id) {

@@ -21,7 +21,7 @@
 				<input id="btnFuture" type="button" value="Шаблон" onclick="Render.onChange(1)">
 				<input id="cur_in_fut" class="opts" type="button" value="Текущее в шаблон" onclick="Win.open_alarm('Скопировать текущее расписание в шаблон?', DB.copyCF)">
 				<input id="fut_in_cur" class="opts" type="button" value="Шаблон в текущее" onclick="Win.open_alarm('Скопировать шаблон в текущее расписание?', DB.copyFC)">
-				<button id="save" onclick="DB.save()">Save</button>
+				<button id="save" onclick="DB.save()"  disabled="Table.save">Save</button>
 				<select name="screen_select" id="screen_select" onchange="Render.select_change.call(this)">
 					<option selected value="0">Все</option>
 					<option value="1">Экран 1</option>
