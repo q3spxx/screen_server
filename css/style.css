@@ -19,6 +19,12 @@ input:hover {
 .row {
 	width: 100%;
 	height: 50px;
+	cursor: move;
+	opacity: 1;
+}
+.ondrag {
+	border: 2px dotted #000;
+	box-sizing: border-box;
 }
 .name {
 	width: 32%;
@@ -97,4 +103,9 @@ input:hover {
 	margin-left: 100px;
 	margin-top: 30px;
 	width: 50px;
+}
+.over {
+	box-sizing: border-box;
+	border: 1px dotted #000;
+	cursor: move;
 }

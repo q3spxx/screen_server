@@ -119,6 +119,12 @@ app.post("/admin", function (req, res) {
 		response = {
 			force_update: true
 		};
+	} else if (req.body.action == "save") {
+		db.save(req.body.data, req.body.tTable);
+		db.update_on();
+		response = {
+			save: true
+		};
 	};
 	res.send(JSON.stringify(response))
 });

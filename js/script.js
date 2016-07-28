@@ -1,7 +1,11 @@
 var Table = {
 	data: null,
+	origin: null,
 	f_data: null,
-	type: "current"
+	f_origin: null,
+	type: "current",
+	draggable_id: null,
+	save: true
 };
 
 var Ajax = {
@@ -38,13 +42,15 @@ var Ajax = {
 	},
 	//Коллбэки запросов
 	getMovies: function (data) {
-		Table.data = data.movies;
+		Table.data = clone(data.movies);
+		Table.origin = clone(data.movies);
 		Sys.add_num(Table.data);
 		Render.showMovies(data.movies);
 	},
 
 	getFuture: function (data) {
-		Table.f_data = data.movies;
+		Table.f_data = clone(data.movies);
+		Table.f_origin = clone(data.movies);
 		Sys.add_num(Table.f_data);
 		Render.showFuture(data.movies);
 	},
@@ -92,10 +98,21 @@ var Ajax = {
 	},
 	force_update: function (data) {
 		console.log("Отправлен запрос на обновление");
+	},
+	save: function (data) {
+		Table.save = false;
 	}
 };
 var DB = {
 	copy: null,
+	save: function () {
+		var body = JSON.stringify({
+			tTable: Table.type,
+			action: "save",
+			data: Table.data
+		});
+		Ajax.send(body, "save");
+	},
 	//Новый фильм
 	newMovie: function (elem) {
 		var inputs = document.getElementById("inputs");
@@ -412,6 +429,13 @@ var Render = {
 			//Создание строки и класса
 			var row = Sys.ce("div");
 			row.className = "row";
+			row.draggable = "true";
+			row.addEventListener("dragstart", handleDragStart, false);
+			row.addEventListener("dragover", handleDragOver, false);
+			row.addEventListener("dragenter", handleDragEnter, false);
+			row.addEventListener("dragleave", handleDragLeave, false);
+			row.addEventListener("dragend", handleDragEnd, false);
+			row.addEventListener("drop", handleDrop, false);
 			//Прикрепление id фильма и типа таблицы
 			row.dataset.id = movie.id;
 			row.dataset.tTable = tTable;
@@ -512,8 +536,129 @@ var Sys = {
 				session.minute = Number(time_arr[1]);
 			});
 		});
+	},
+	gen_uuid: function () {
+		var uuid = "";
+		for (var i = 0; i < 32; i++) {
+			uuid += Math.floor(Math.random() * 16).toString(16);
+		};
+		return uuid;
 	}
 }
+
+function handleDragStart (e) {
+	e.dataTransfer.setData("plain/text", e.target.dataset.index);
+	Table.draggable_id = e.target.dataset.id;
+};
+
+function handleDragOver (e) {
+	e.preventDefault();
+};
+
+function handleDragEnter (e) {
+	e.preventDefault();
+	if (!e.target.dataset.id) {
+		return false;
+	};
+	if (Table.draggable_id == e.target.dataset.id) {
+		this.classList.add('ondrag');
+		return false;
+	};
+	move_row(Table.draggable_id, e.target.dataset.id);
+	if (Table.type == "current") {
+		Render.showMovies(Table.data);
+	} else {
+		Render.showFuture(Table.f_data);
+	};
+	this.classList.add('over');
+};
+
+function handleDragLeave (e) {
+	e.preventDefault();
+	this.classList.remove('over');
+};
+
+function handleDragEnd (e) {
+	e.preventDefault();
+	var elem = document.getElementById(Table.type).children[0];
+	for (var i = 0; i < elem.children.length; i++) {
+		elem.children[i].classList.remove('over');
+		elem.children[i].classList.remove('ondrag');
+	};
+};
+
+function handleDrop (e) {
+	if (e.stopPropagation) {
+		e.stopPropagation();
+	};
+};
+
+function move_row (drag_id, enter_id, type) {
+	var drag_index = find_index(drag_id);
+	var enter_index = find_index(enter_id);
+	var row;
+	var t;
+	if (Table.type == "current") {
+		t = Table.data;
+		row = t[drag_index];
+	} else {
+		t = Table.f_data;
+		row = t[drag_index];
+	};
+	t.splice(drag_index, 1);
+	t.splice(enter_index, 0, row);
+
+};
+
+function find_index (id) {
+	var t;
+	if (Table.type == "current") {
+		t = Table.data;
+	} else {
+		t = Table.f_data;
+	};
+	for (var i = 0; i < t.length; i++) {
+		if (t[i].id == id) {
+			return i;
+		};
+	};
+	return false;
+};
+
+
+function clone(obj) {
+    var copy;
+
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+        copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+};
 
 function init () {
 	DB.getMovies();
